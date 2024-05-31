@@ -6,6 +6,10 @@ import { NewNote } from './components/NewNote';
 import { useAppContext } from './hooks';
 import { IconLayoutGrid, IconList } from '@tabler/icons-react';
 
+// TODO:
+// Landing Screen
+// Persist state
+
 function App() {
   const { page, setLayoutType } = useAppContext();
 
