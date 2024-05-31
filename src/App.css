@@ -1,0 +1,31 @@
+.action-btn {
+    width: 40px;
+    border-radius: 10px;
+    :hover {
+        background-color: var(--mantine-color-gray-2)
+    }
+}
+
+.note-item {
+    cursor: pointer;
+    background-color: white;
+    border: 1px solid var(--mantine-color-gray-2);
+    transition: all .3s ease;
+}
+
+.note-item:hover {
+    transform: scale(1.02)
+}
+
+.note-item:active {
+    transform: scale(1)
+}
+
+.card-delete-btn {
+    display: none;
+    transition: all .3s ease;
+}
+
+.note-item-card:hover .card-delete-btn {
+    display: inline;
+}

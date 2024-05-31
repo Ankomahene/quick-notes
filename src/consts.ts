@@ -1,0 +1,16 @@
+export const colors = [
+  'blue',
+  'green',
+  'indigo',
+  'purple',
+  'orange',
+  'gray',
+  'teal',
+  'pink',
+  'red',
+  'grape',
+  'violet',
+  'cyan',
+  'lime',
+  'yellow',
+];
