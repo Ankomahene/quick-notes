@@ -1,9 +1,11 @@
-import { Box, Button, Divider, Flex, Group, Text, Title } from '@mantine/core';
-import { IconPlus } from '@tabler/icons-react';
+import { Box, Divider, Flex, Group, Title } from '@mantine/core';
 import { useQueryClient } from 'react-query';
 import { useAppContext, useNotes } from '../hooks';
 import { INote } from '../types';
 import supabase from '../utils/supabase';
+import { Loading } from './Loading';
+import { NewNoteButton } from './NewNoteButton';
+import { NoNotesCard } from './NoNotesCard';
 import { NoteItemBar } from './NoteItemBar';
 import { NoteItemCard } from './NoteItemCard';
 
@@ -12,13 +14,6 @@ export const NoteList = () => {
     useAppContext();
   const { notes, isLoading } = useNotes();
   const queryClient = useQueryClient();
-
-  const createNewNote = () => {
-    setPage(2);
-    setNoteId('');
-    setNoteTitle('Untitled Note');
-    setNoteContent('');
-  };
 
   const openNote = (note: INote) => {
     setPage(2);
@@ -42,19 +37,7 @@ export const NoteList = () => {
     <>
       {layoutType === 'list' && (
         <Group my="md" px="lg">
-          <Button
-            fullWidth
-            h={80}
-            color="indigo"
-            bg="indigo.1"
-            variant="light"
-            style={{ border: '1px dashed var(--mantine-color-indigo-4)' }}
-            leftSection={<IconPlus />}
-            onClick={createNewNote}
-            radius="xs"
-          >
-            New Note
-          </Button>
+          <NewNoteButton type={1} />
         </Group>
       )}
 
@@ -65,9 +48,9 @@ export const NoteList = () => {
         />
 
         {isLoading ? (
-          <Text c="dimmed" py="lg">
-            Loading notes...
-          </Text>
+          <Loading />
+        ) : notes.length === 0 ? (
+          <NoNotesCard />
         ) : layoutType === 'list' ? (
           notes.map((note) => (
             <NoteItemBar
@@ -84,19 +67,7 @@ export const NoteList = () => {
             direction={{ base: 'column', xs: 'row' }}
             wrap="wrap"
           >
-            <Button
-              w={{ base: '100%', xs: 200 }}
-              h={150}
-              color="indigo"
-              bg="indigo.1"
-              variant="light"
-              style={{ border: '1px dashed var(--mantine-color-indigo-4)' }}
-              leftSection={<IconPlus />}
-              onClick={createNewNote}
-              radius="xs"
-            >
-              New Note
-            </Button>
+            <NewNoteButton type={2} />
 
             {notes.map((note) => (
               <NoteItemCard

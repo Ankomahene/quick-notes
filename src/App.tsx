@@ -1,22 +1,25 @@
 import { ActionIcon, Card, Container, Group, Title } from '@mantine/core';
 import '@mantine/core/styles.css';
-import './App.css';
-import { NoteList } from './components/NoteList';
-import { NewNote } from './components/NewNote';
-import { useAppContext } from './hooks';
 import { IconLayoutGrid, IconList } from '@tabler/icons-react';
-
-// TODO:
-// Landing Screen
-// Persist state
+import './App.css';
+import { Landing } from './components/Landing';
+import { NewNote } from './components/NewNote';
+import { NoteList } from './components/NoteList';
+import { User } from './components/User';
+import { useAppContext } from './hooks';
 
 function App() {
   const { page, setLayoutType } = useAppContext();
 
   return (
     <>
-      <Container size="md" bg="gray.1" px={0} my="lg" mih={600}>
-        <Card p="0" radius="xs" bg="transparent">
+      <Container size="md" px={0} my="lg" mih={600}>
+        {page !== 0 && (
+          <Group justify="flex-end">
+            <User />
+          </Group>
+        )}
+        <Card p="0" radius="xs" bg="gray.1">
           <Group bg="indigo.1" justify="space-between">
             <Title py="sm" px="md" c="indigo" order={3}>
               Quick Notes
@@ -44,7 +47,9 @@ function App() {
             )}
           </Group>
 
-          {page === 1 ? <NoteList /> : <NewNote />}
+          {page === 0 && <Landing />}
+          {page === 1 && <NoteList />}
+          {page === 2 && <NewNote />}
         </Card>
       </Container>
     </>

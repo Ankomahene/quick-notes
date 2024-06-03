@@ -24,6 +24,7 @@ export function NewNote() {
     setNoteId,
     setPage,
     setNoteContent,
+    user,
   } = useAppContext();
 
   const saveNote = async () => {
@@ -32,9 +33,9 @@ export function NewNote() {
     const title = noteTitle;
 
     if (noteId) {
-      await updateNote({ title, content, updated_at: now, user_id: 1 });
+      await updateNote({ title, content, updated_at: now, user_id: user?.id });
     } else {
-      await addNewNote({ user_id: 1, title, content, updated_at: now });
+      await addNewNote({ user_id: user?.id, title, content, updated_at: now });
     }
   };
 

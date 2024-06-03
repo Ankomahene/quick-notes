@@ -14,15 +14,22 @@ export const useAppContext = () => {
   return context;
 };
 
-const getNotes = async () =>
+const getNotes = async (userId?: number) =>
   await supabase
     .from('notes')
     .select('*')
-    .eq('user_id', 1)
+    .eq('user_id', userId)
     .order('updated_at', { ascending: false })
     .returns<INote[]>();
 
 export const useNotes = () => {
-  const { data: res, error, isLoading } = useQuery('notes', getNotes);
+  const { user } = useAppContext();
+
+  const {
+    data: res,
+    error,
+    isLoading,
+  } = useQuery('notes', async () => await getNotes(user?.id));
+
   return { notes: res?.data || [], error: res?.error || error, isLoading };
 };

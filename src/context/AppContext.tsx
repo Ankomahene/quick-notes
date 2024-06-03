@@ -6,15 +6,18 @@ import TextAlign from '@tiptap/extension-text-align';
 import Underline from '@tiptap/extension-underline';
 import { Editor, useEditor } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
-import { ReactNode, createContext, useState } from 'react';
-import { LayoutType } from '../types';
+import { ReactNode, createContext } from 'react';
+import { IUser, LayoutType } from '../types';
+import { useLocalStorage } from '@mantine/hooks';
 
 interface IAppContext {
+  user: IUser | null;
   page: number;
   editor: Editor | null;
   noteId: string;
   noteTitle: string;
   layoutType: LayoutType;
+  setUser: (user: IUser | null) => void;
   setNoteId: (id: string) => void;
   setNoteTitle: (value: string) => void;
   setPage: (value: number) => void;
@@ -25,10 +28,26 @@ interface IAppContext {
 export const AppContext = createContext<IAppContext | null>(null);
 
 export const AppContextProvider = ({ children }: { children: ReactNode }) => {
-  const [noteTitle, setNoteTitle] = useState<string>('Untitled Note');
-  const [noteId, setNoteId] = useState<string>('');
-  const [page, setPage] = useState<number>(1);
-  const [layoutType, setLayoutType] = useState<LayoutType>('list');
+  const [noteTitle, setNoteTitle] = useLocalStorage<string>({
+    key: 'quick_note_current_note_title',
+    defaultValue: 'Untitled Note',
+  });
+  const [noteId, setNoteId] = useLocalStorage<string>({
+    key: 'quick_note_current_note_id',
+    defaultValue: '',
+  });
+  const [page, setPage] = useLocalStorage<number>({
+    key: 'quick_note_current_page',
+    defaultValue: 0,
+  });
+  const [layoutType, setLayoutType] = useLocalStorage<LayoutType>({
+    key: 'quick_note_current_layout',
+    defaultValue: 'list',
+  });
+  const [user, setUser] = useLocalStorage<IUser | null>({
+    key: 'quick_note_current_user',
+    defaultValue: null,
+  });
 
   const editor = useEditor({
     extensions: [
@@ -47,11 +66,13 @@ export const AppContextProvider = ({ children }: { children: ReactNode }) => {
     <AppContext.Provider
       value={{
         editor,
+        user,
         noteTitle,
         setNoteTitle,
         noteId,
         setNoteId,
         page,
+        setUser,
         setPage,
         setNoteContent: (content: string) =>
           editor?.commands.setContent(content),

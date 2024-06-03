@@ -19,14 +19,14 @@ import { useDisclosure } from '@mantine/hooks';
 export function SaveAs() {
   const [opened, { close, open }] = useDisclosure(false);
   const [title, setTitle] = useState('');
-  const { noteTitle, setNoteTitle, editor, setNoteId } = useAppContext();
+  const { noteTitle, setNoteTitle, editor, setNoteId, user } = useAppContext();
 
   const addNewNote = async () => {
     const { data, error } = await supabase
       .from('notes')
       .insert([
         {
-          user_id: 1,
+          user_id: user?.id,
           title,
           content: editor?.getHTML(),
           updated_at: new Date(),
